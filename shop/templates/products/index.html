@@ -9,6 +9,18 @@
     {% for product in products %}
         <a href="{{product.get_absolute_url}}"><h1>{{product.title}}</h1></a>
         <p>{{product.description}}</p>
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'like' %}" method="POST">
+            {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+            {% if user not in product.liked.all %}
+                <button type="submit" class="btn btn-outline-danger">Like</button>
+            {% else %}
+                <button type="submit" class="btn btn-outline-dark">unlike</button>
+            {% endif %}
+        </form>
+        {% endif %}
+
     {% endfor %}
     <div id="sidebar">
         <h3>Categories</h3>
@@ -22,6 +34,9 @@
         </li>
         {% endfor %}
         </ul>
+        </div>
+        <div>
+            {{likes}}
         </div>
 </body>
 </html>
