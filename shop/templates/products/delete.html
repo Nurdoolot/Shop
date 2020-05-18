@@ -1,0 +1,6 @@
+<p>Are you sure you want to delete "{{ product }}"?</p>
+                <form action="{% url 'delete' product.id %}" method="POST">
+                    {% csrf_token %}
+                    <a class="btn btn-warning" href="{% url 'product' %}">Cancel</a>
+                    <input class="btn btn-danger" type="submit" name="Confirm">
+                </form>

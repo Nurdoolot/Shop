@@ -1,0 +1,23 @@
+<br>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-body">
+            <hr>
+            <img src="{{ request.user.profile.photo.url }}" alt="" style="max-height: 200px;
+                                                                          max-width: 200px;
+                                                                          margin: 0 auto;
+                                                                          border-radius: 50%;">
+            <hr>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form}}
+                <input type="submit" class="btn btn-dark" value="Update">
+            </form>
+        </div>
+    </div>
+
+</div>
