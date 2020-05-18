@@ -1,18 +1,22 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Category, Product
+from .models import Category, Product, Like
 from .forms import ProductForm, ProductUpdateForm
 from django.shortcuts import redirect
 
+from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def product(request, slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.all()
+    user = request.user
+    likes = Product.objects.filter(liked=request.user)
     if slug:
         category = get_object_or_404(Category, slug=slug)
         products =    products.filter(category=category)
-    context = {'category': category, 'categories': categories, 'products': products}
+    context = {'category': category, 'categories': categories, 'products': products, 'likes': likes, 'user': user}
     return render(request, 'products/index.html', context)
 
 
@@ -63,3 +67,25 @@ def product_delete(request, pk):
         return redirect('/')
     context = {'product': product}
     return render(request, 'products/delete.html', context)
+
+
+def like_post(request):
+    user = request.user
+    product_id = request.POST.get('product_id')
+    product_obj = Product.objects.get(id=product_id)
+    if request.method == 'POST':
+
+        if user in product_obj.liked.all():
+            product_obj.liked.remove(user)
+        else:
+            product_obj.liked.add(user)
+
+        like, created = Like.objects.get_or_create(user=user, product_id=product_id)
+
+        if not created:
+            if like.value == 'like':
+                like.value = 'unlike'
+            else:
+                like.value = 'like'
+        like.save()
+    return redirect('product')
