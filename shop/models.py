@@ -24,6 +24,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
     category = models.ForeignKey(Category, related_name='products', on_delete=models.DO_NOTHING)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -38,3 +39,21 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse('detail', args=[self.id, self.slug])
+
+    @property
+    def num_like(self):
+        return self.liked.all().count()
+
+
+LIKE_CHOICES = (
+    ('like', 'like'),
+    ('unlike', 'unlike')
+)
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    value = models.CharField(choices=LIKE_CHOICES, default='Like', max_length=10)
+
+    def __str__(self):
+        return str(self.post)
