@@ -13,7 +13,7 @@ def register_user(request):
             form.save()
             return redirect('product')
     context = {'form': form}
-    return render(request, 'user/register.html', context)
+    return render(request, 'accounts/register.html', context)
 
 
 def login_user(request):

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for product in products %}
+        <a href="{{product.get_absolute_url}}"><h1>{{product.title}}</h1></a>
+        <p>{{product.description}}</p>
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'like' %}" method="POST">
+            {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+            {% if user not in product.liked.all %}
+                <button type="submit" class="btn btn-outline-danger">Like</button>
+            {% else %}
+                <button type="submit" class="btn btn-outline-dark">unlike</button>
+            {% endif %}
+        </form>
+        {% endif %}
+
+    {% endfor %}
+    <div id="sidebar">
+        <h3>Categories</h3>
+        <ul>
+        <li {% if not category %}class="selected"{% endif %}>
+        <a href="{% url 'product' %}">All</a>
+        </li>
+        {% for c in categories %}
+        <li {% if category.slug == c.slug %}class="selected" {% endif %}>
+        <a href="{{ c.get_absolute_url }}">{{ c.title }}</a>
+        </li>
+        {% endfor %}
+        </ul>
+        </div>
+        <div>
+            {% for like in likes %}
+                {{like.title}}
+            {% endfor %}
+        </div>
+</body>
+</html>

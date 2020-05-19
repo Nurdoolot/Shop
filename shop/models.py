@@ -6,12 +6,12 @@ from time import time
 
 def gen_slug(s):
     new_slug = slugify(s, allow_unicode=True)
-    return new_slug + '-' + str(int(time()))
+    return new_slug 
 
 
 class Category(models.Model):
     title = models.CharField(max_length=150)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -19,6 +19,11 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = gen_slug(self.title)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('product_by_category', args=[self.slug])
