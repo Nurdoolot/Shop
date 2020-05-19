@@ -10,7 +10,11 @@ from django.contrib.auth.decorators import login_required
 def product(request, slug=None):
     category = None
     categories = Category.objects.all()
-    products = Product.objects.all()
+    search_query = request.GET.get('search', '')
+    if search_query:
+        products = Product.objects.filter(title__icontains=search_query)
+    else:
+        products = Product.objects.all()
     user = request.user
     likes = Product.objects.filter(liked=request.user)
     if slug:
