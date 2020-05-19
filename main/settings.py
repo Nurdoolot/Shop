@@ -13,7 +13,7 @@ SECRET_KEY = '6dfz)(#%1nq=h6_9@zhm=aksf170t0r$2kwu@yu*_=_3h-9+e_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shop.apps.ShopConfig',
     'sorl.thumbnail',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -41,6 +42,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'main.urls'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 TEMPLATES = [
     {

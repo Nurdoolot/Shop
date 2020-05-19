@@ -102,7 +102,7 @@
                         <div class="col-md-2 col-sm-4 col-xs-3">  
                             <ul class="menu-extra">
                                 <li class="search search__open hidden-xs"><span class="ti-search"></span></li>
-                                <li><a href="login-register.html"><span class="ti-user"></span></a></li>
+                                <li><a href="{% url 'profile' %}"><span class="ti-user"></span></a></li>
                                 <li class="cart__menu"><span class="ti-shopping-cart"></span></li>
                                 <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
                             </ul>
@@ -184,7 +184,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="bradcaump__inner text-center">
-                                <h2 class="bradcaump-title">Shop QIK</h2>
+                                <h2 class="bradcaump-title">Shop QIY</h2>
                                 <nav class="bradcaump-inner">
                                   <a class="breadcrumb-item" href="{% url 'product' %}">Home</a>
                                   
@@ -207,14 +207,14 @@
                             <!-- End Range -->
                             <!-- Start Product Cat -->
                             <div class="htc__shop__cat">
-                                <h4 class="section-title-4">PRODUCT CATEGORIES</h4>
+                                <h2 class="section-title-4">PRODUCT CATEGORIES</h2>
                                 <ul class="sidebar__list">
                                     <li>
-                                        <a href="{% url 'product' %}">All</a>
+                                        <a href="{% url 'product' %}">{All}</a>
                                     </li>
                                     {% for c in categories %}
                                     <li {% if category.slug == c.slug %} {% endif %}>
-                                        <a href="{{ c.get_absolute_url }}">{{ c.title }}</a>
+                                        <a href="{{ c.get_absolute_url }}">[{{ c.title }}]</a>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -239,7 +239,7 @@
                                         <div class="product">
                                             <div class="product__inner">
                                                 <div class="pro__thumb">
-                                                    <a href="#">
+                                                    <a href="{% url 'detail' product.id %}">
                                                         {% thumbnail product.image "300" as img %}
                                                         <img src="{{img.url}}" alt="product images">
                                                         {% endthumbnail %}
@@ -262,7 +262,7 @@
                                                 </div>
                                             </div>
                                             <div class="product__details">
-                                                <h2><a href="product-details.html">{{product.title}}</a></h2>
+                                                <h2><a href="{% url 'detail' product.id %}">{{product.title}}</a></h2>
                                                 <ul class="product__price">
                                                     <li class="new__price">${{product.price}}</li>
                                                 </ul>
@@ -281,7 +281,7 @@
                     </div>
                     {% if is_paginated %}
                     <div class="paginator">
-                        <a class="prev {% if not prev_url %}disabled{% endif %}" href="{{ prev_url }}">Prev</a>
+                        <a class="next {% if not prev_url %}disabled{% endif %}" href="{{ prev_url }}">Prev</a>
                         {% for n in products.paginator.page_range %}
                             {% if products.number == n %}
                         <a class="current" href="?page={{ n }}">{{ n }}</a>
@@ -297,6 +297,30 @@
             
         </section>
         <!-- End Our ShopSide Area -->
+        
+        <div class="shopping__cart">
+            <div class="shopping__cart__inner">
+                <div class="offsetmenu__close__btn">
+                    <a><i class="zmdi zmdi-close"></i></a>
+                </div>
+                <div class="shp__cart__wrap">
+                    {% for like in likes %}
+                    <div class="shp__single__product">
+                        <div class="shp__pro__thumb">
+                            <a href="#">
+                                <img src="{{like.image.url}}" alt="product images">
+                            </a>
+                        </div>
+                        <div class="shp__pro__details">
+                            <h2><a href="product-details.html">{{like.title}}</a></h2>
+                            <span class="shp__price">${{like.price}}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+               
+            </div>
+        </div>
         <!-- Start Footer Area -->
         <footer class="htc__foooter__area gray-bg">
             <div class="container">

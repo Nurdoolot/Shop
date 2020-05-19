@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Category, Product, Like
-from .forms import ProductForm, ProductUpdateForm
+from .models import Category, Product, Like, Reviews
+from .forms import ProductForm, ProductUpdateForm, ReviewForm
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -18,7 +18,7 @@ def product(request, slug=None):
         products = Product.objects.all()
     user = request.user
 
-    paginator = Paginator(products, 10)
+    paginator = Paginator(products, 8)
     page_num = request.GET.get('page', 1)
     page = paginator.get_page(page_num)
     is_paginated = page.has_other_pages()
@@ -50,10 +50,20 @@ def product(request, slug=None):
     return render(request, 'products/index.html', context)
 
 
-
+@login_required()
 def detail(request, id):
     product = get_object_or_404(Product, id=id)
-    context = {'product': product}
+    reviews = Reviews.objects.filter(product=product).order_by('-id')
+
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST or None)
+        if review_form.is_valid():
+            text = request.POST.get('text')
+            review = Reviews.objects.create(product=product, username=request.user, text=text)
+            review.save()
+    else:
+        review_form = ReviewForm()
+    context = {'product': product, 'reviews': reviews, 'review_form': review_form}
     return render(request, 'products/detail.html', context)
 
 

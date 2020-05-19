@@ -36,7 +36,7 @@ body {
 
 
 .paginator .current {
-    background-color: #16a085;
+    background-color: #8d8a8b;
 }
 
 .paginator .disabled {
@@ -44,5 +44,5 @@ body {
 }
 
 .paginator a:hover {
-    background-color: #2ecc71;
+    background-color: #8d8a8b;
 }

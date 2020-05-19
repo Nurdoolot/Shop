@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category
+from .models import Product, Category, Reviews
 import csv
 import datetime
 from django.http import HttpResponse
@@ -8,6 +8,11 @@ from django.http import HttpResponse
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']
     prepopulated_fields = {'slug': ('title',)}
+
+
+@admin.register(Reviews)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['username', 'product']
 
 
 def export_to_csv(modeladmin, request, queryset):
