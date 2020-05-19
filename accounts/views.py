@@ -24,7 +24,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             return redirect('product')
-    return render(request, 'user/login.html')
+    return render(request, 'accounts/login.html')
 
 
 def logout_user(request):
@@ -41,4 +41,4 @@ def profile(request):
         if form.is_valid():
             form.save()
     context = {'form': form}
-    return render(request, 'user/profile.html', context)
+    return render(request, 'accounts/profile.html', context)

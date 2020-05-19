@@ -36,7 +36,9 @@
         </ul>
         </div>
         <div>
-            {{likes}}
+            {% for like in likes %}
+                {{like.title}}
+            {% endfor %}
         </div>
 </body>
 </html>

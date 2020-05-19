@@ -59,6 +59,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
+LOGIN_REDIRECT_URL = 'product'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -108,3 +112,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'rayfi.vv@gmail.com'
+EMAIL_HOST_PASSWORD = 'ns13ash24'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

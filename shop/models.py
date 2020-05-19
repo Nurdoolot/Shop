@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils.text import slugify
+from time import time
+
+def gen_slug(s):
+    new_slug = slugify(s, allow_unicode=True)
+    return new_slug + '-' + str(int(time()))
 
 
 class Category(models.Model):
@@ -20,7 +26,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255, db_index=True)
-    slug = models.SlugField(max_length=200, db_index=True)
+    slug = models.SlugField(max_length=200, db_index=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -36,9 +42,14 @@ class Product(models.Model):
     class Meta:
         ordering = ('title',)
         index_together = (('id', 'slug'))
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = gen_slug(self.title)
+        super().save(*args, **kwargs)
     
     def get_absolute_url(self):
-        return reverse('detail', args=[self.id, self.slug])
+        return reverse('detail', args=[self.id])
 
     @property
     def num_like(self):
