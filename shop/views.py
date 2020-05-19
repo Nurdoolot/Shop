@@ -9,7 +9,8 @@ from django.contrib.auth.decorators import login_required
 @login_required()
 def product(request, slug=None):
     category = None
-    categories = Category.objects.all()
+    
+
     search_query = request.GET.get('search', '')
     if search_query:
         products = Product.objects.filter(title__icontains=search_query)
@@ -30,20 +31,22 @@ def product(request, slug=None):
         next_url = '?page={}'.format(page.next_page_number())
     else:
         next_url = ''
-    
     likes = Product.objects.filter(liked=request.user)
+    categories = Category.objects.all()
     if slug:
         category = get_object_or_404(Category, slug=slug)
-        products =    products.filter(category=category)
+        page = Product.objects.filter(category=category)
+    
     context = {
-        'category': category, 
-        'categories': categories, 
+        'category': category,
+        'categories': categories,  
         'products': page, 
         'likes': likes, 
         'user': user, 
         'is_paginated': is_paginated,
         'next_url': next_url,
-        'prev_url': prev_url}
+        'prev_url': prev_url,
+        }
     return render(request, 'products/index.html', context)
 
 
