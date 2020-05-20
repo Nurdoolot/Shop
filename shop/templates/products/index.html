@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3">
                             <div class="logo">
-                                <a href="index.html">
+                                <a href="{% url 'product' %}">
                                     <img src="{% static 'images/logo/logo.png' %}" alt="logo">
                                 </a>
                             </div>
@@ -60,40 +60,36 @@
                         <div class="col-md-8 col-lg-8 col-sm-6 col-xs-6">
                             <nav class="mainmenu__nav hidden-xs hidden-sm">
                                 <ul class="main__menu">
-                                    <li class="drop"><a href="index.html">Home</a>
+                                    <li class="drop"><a href="{% url 'product' %}">Home</a>
                                         
                                     </li>
-                                    <li class="drop"><a href="portfolio-gutter-box-3.html">portfolio</a>
-                                       
+                                    {% if request.user.is_authenticated and request.user.is_staff %}
+                                    <li class="drop"><a href="{% url 'create' %}">Create</a></li>
+                                    {% endif %}
+                                    {% if request.user.is_authenticated %}
+                                    <li class="drop"><a href="{% url 'logout' %}">LogOut</a></li>
+                                    {% else %}
+                                    <li class="drop"><a>L OR R</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'login' %}">Log In</a></li>
+                                            <li><a href="{% url 'register' %}">Sign In</a></li>
+                                        </ul>
                                     </li>
-                                    <li class="drop"><a href="blog.html">Blog</a>
-                                       
-                                    </li>
-                                    <li class="drop"><a href="shop.html">Shop</a>
-                                       
-                                    </li>
-                                    <li class="drop"><a href="#">pages</a>
-                                       
-                                    </li>
-                                    <li><a href="contact.html">contact</a></li>
+                                    {% endif %}
+                                
                                 </ul>
                             </nav>
                             <div class="mobile-menu clearfix visible-xs visible-sm">
                                 <nav id="mobile_dropdown">
                                     <ul>
-                                        <li><a href="index.html">Home</a>
+                                        <li><a href="{% url 'product' %}">Home</a>
                                             
                                         </li>
-                                        <li><a href="#">portfolio</a>
+                                        <li><a href="{% url 'product' %}">portfolio</a>
                                            
                                         </li>
-                                        <li><a href="blog.html">blog</a>
-                                        
-                                        </li>
-                                        <li><a href="#">pages</a>
-                                           
-                                        </li>
-                                        <li><a href="contact.html">contact</a></li>
+                                       
+                                        <li><a href="{% url 'product' %}">contact</a></li>
                                   
                                 </nav>
                             </div>                          
@@ -103,7 +99,9 @@
                             <ul class="menu-extra">
                                 <li class="search search__open hidden-xs"><span class="ti-search"></span></li>
                                 <li><a href="{% url 'profile' %}"><span class="ti-user"></span></a></li>
+                                {% if request.user.is_authenticated %}
                                 <li class="cart__menu"><span class="ti-shopping-cart"></span></li>
+                                {% endif %}
                                 <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
                             </ul>
                         </div>
@@ -144,7 +142,7 @@
                     </div>
                     <div class="off__contact">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="{% url 'product' %}">
                                 <img src="{% static 'images/logo/logo.png' %}" alt="logo">
                             </a>
                         </div>
@@ -307,12 +305,12 @@
                     {% for like in likes %}
                     <div class="shp__single__product">
                         <div class="shp__pro__thumb">
-                            <a href="#">
+                            <a href="{% url 'detail' like.id %}">
                                 <img src="{{like.image.url}}" alt="product images">
                             </a>
                         </div>
                         <div class="shp__pro__details">
-                            <h2><a href="product-details.html">{{like.title}}</a></h2>
+                            <h2><a href="{% url 'detail' like.id %}">{{like.title}}</a></h2>
                             <span class="shp__price">${{like.price}}</span>
                         </div>
                     </div>
@@ -330,7 +328,7 @@
                         <div class="col-md-3 col-lg-3 col-sm-6">
                             <div class="ft__widget">
                                 <div class="ft__logo">
-                                    <a href="index.html">
+                                    <a href="{% url 'product' %}">
                                         <img src="{% static 'images/logo/logo.png' %}" alt="footer logo">
                                     </a>
                                 </div>

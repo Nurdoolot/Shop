@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3">
                             <div class="logo">
-                                <a href="index.html">
+                                <a href="{% url 'product' %}">
                                     <img src="{% static 'images/logo/logo.png' %}" alt="logo">
                                 </a>
                             </div>
@@ -60,22 +60,17 @@
                         <div class="col-md-8 col-lg-8 col-sm-6 col-xs-6">
                             <nav class="mainmenu__nav hidden-xs hidden-sm">
                                 <ul class="main__menu">
-                                    <li class="drop"><a href="index.html">Home</a>
+                                    <li class="drop"><a href="{% url 'product' %}">Home</a>
                                        
                                     </li>
-                                    <li class="drop"><a href="portfolio-gutter-box-3.html">portfolio</a>
+                                    {% if request.user.is_authenticated and request.user.is_staff %}
+                                    <li class="drop"><a href="{% url 'update' product.id %}">Update</a>
                                        
                                     </li>
-                                    <li class="drop"><a href="blog.html">Blog</a>
+                                    <li class="drop"><a href="{% url 'delete' product.id %}">Delete</a>
                                        
                                     </li>
-                                    <li class="drop"><a href="shop.html">Shop</a>
-                                      
-                                    </li>
-                                    <li class="drop"><a href="#">pages</a>
-                                       
-                                    </li>
-                                    <li><a href="contact.html">contact</a></li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                             <div class="mobile-menu clearfix visible-xs visible-sm">
@@ -253,6 +248,7 @@
                                 <hr>
                                 <!-- End Blog Comment Area -->
                                 <!-- Start Reply Form -->
+                                {% if request.user.is_authenticated %}
                                 <div class="our-reply-form-area mt--20">
                                     <h2 class="section-title-2">leave a review</h2>
                                     <div class="reply-form-inner mt--40">
@@ -265,10 +261,10 @@
                                                 
                                             </form>
                                         </div>
-                                       
+                                        
                                     </div>
                                 </div>
-                                <!-- End Reply Form -->
+                                {% endif %}
                             </div>
                         </div>
                     </div>

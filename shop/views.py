@@ -6,10 +6,12 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 
 
-@login_required()
 def product(request, slug=None):
     category = None
-    
+    if  request.user.is_authenticated:
+        likes = Product.objects.filter(liked=request.user)
+    else:
+        likes = Product.objects.all()
 
     search_query = request.GET.get('search', '')
     if search_query:
@@ -18,7 +20,7 @@ def product(request, slug=None):
         products = Product.objects.all()
     user = request.user
 
-    paginator = Paginator(products, 8)
+    paginator = Paginator(products, 8)  
     page_num = request.GET.get('page', 1)
     page = paginator.get_page(page_num)
     is_paginated = page.has_other_pages()
@@ -31,7 +33,6 @@ def product(request, slug=None):
         next_url = '?page={}'.format(page.next_page_number())
     else:
         next_url = ''
-    likes = Product.objects.filter(liked=request.user)
     categories = Category.objects.all()
     if slug:
         category = get_object_or_404(Category, slug=slug)
@@ -50,7 +51,6 @@ def product(request, slug=None):
     return render(request, 'products/index.html', context)
 
 
-@login_required()
 def detail(request, id):
     product = get_object_or_404(Product, id=id)
     reviews = Reviews.objects.filter(product=product).order_by('-id')
