@@ -5,13 +5,13 @@ from .models import Product, Reviews
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('title', 'description', 'category', 'image', 'price')
+        fields = ('title', 'description', 'category', 'price', 'image')
 
 
 class ProductUpdateForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('title', 'description', 'image', 'price')
+        fields = ('title', 'description', 'category', 'price', 'image')
 
 
 class ReviewForm(forms.ModelForm):
